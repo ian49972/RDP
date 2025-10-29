@@ -1,0 +1,21 @@
+---------------------------------------------------------------------
+--R6Script - Place this script into ServerScriptService to convert --
+--           all players to R6.   By ScpttSpiritWalker, 9/24/2024. --
+---------------------------------------------------------------------
+game.Players.PlayerAdded:Connect(function(player) 
+    player.CharacterAdded:Connect(function(char) 
+        if char:WaitForChild("Humanoid").RigType == Enum.HumanoidRigType.R15 then 
+            local desc = game.Players:GetHumanoidDescriptionFromUserId(player.CharacterAppearanceId) 
+            local newAvatar = game.Players:CreateHumanoidModelFromDescription(desc, Enum.HumanoidRigType.R6) 
+            newAvatar:SetPrimaryPartCFrame(char.PrimaryPart.CFrame) 
+            for _,j in pairs(char:GetChildren()) do
+                if j.ClassName == "Tool" or (j:IsA("LuaSourceContainer") and j.Name ~= "Animate") then
+                    j.Parent = newAvatar
+                end
+            end
+            newAvatar.Name = player.Name 
+            player.Character = newAvatar 
+            newAvatar.Parent = workspace 
+        end 
+    end) 
+end)
